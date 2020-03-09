@@ -4,7 +4,7 @@ from sys import argv
 from sys import stderr
 
 from tlgr import Parser
-from tlgr import WordCloud
+from vis import WordCloud
 
 EX_DATAERR = 65
 default_res_addr = "res.png"

@@ -7,7 +7,7 @@ from wordcloud_fa import WordCloudFa
 from PIL import Image
 
 default_stop_words_path = path.join(path.dirname(__file__), ("assets/stopwords/persian").replace("/", path.sep))
-default_mask_addr = path.join(path.dirname(__file__), ("assets/masks/telegram.png").replace("/", path.sep))
+default_mask_addr = path.join(path.dirname(__file__), ("../tlgr/assets/masks/telegram.png").replace("/", path.sep))
 
 weird_patterns = re.compile(  # https://stackoverflow.com/a/57506785
     r"["
