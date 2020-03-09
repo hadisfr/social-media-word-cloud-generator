@@ -46,7 +46,7 @@ punctuation_patterns = re.compile(
 
 
 class WordCloud:
-    """Telegram Word Cloud"""
+    """Word Cloud Generator"""
 
     def __init__(self, mask=None, size=900, stop_words_addr=default_stop_words_path, mask_addr=None):
         self.normalizer = hazm.Normalizer()
@@ -70,7 +70,8 @@ class WordCloud:
     def _preprocess(self, msgs):
         words = []
         for msg in msgs:
-            msg = re.sub(r"https?:\/\/.*", "", msg)  # https://github.com/MasterScrat/Chatistics
+            msg = re.sub(r"https?:\/\/\S*", "", msg)  # https://github.com/MasterScrat/Chatistics
+            msg = re.sub(r"\@\S*", "", msg)
             msg = self._normalize(msg)
             msg = msg.replace("ؤ", "و")
             msg = msg.replace("أ", "ا")
@@ -80,6 +81,7 @@ class WordCloud:
                 if self._is_stop_word(word):
                     word = ""
                 if word:
+                    # word = self.stemmer.stem(word)
                     word = word.replace(u"\u200c", "")
                     if "\u200c" in word:
                         print(word)
@@ -109,16 +111,72 @@ class WordCloud:
                 if word[1:-1] + "ود" in self.stop_words:
                     return True
         if word[-1] == "ه":
-            word = word[:-1] + "د"  # داره
-            if self._is_stop_verb(word):
+            modified_word = word[:-1] + "د"  # داره
+            if self._is_stop_verb(modified_word):
                 return True
-            if self._is_stop_verb(word.replace("می", "می\u200c", 1)):
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
                 return True
-            word = word[:-1]  # رفته
-            if self._is_stop_verb(word):
+            if modified_word in self.stop_words:
                 return True
-            if self._is_stop_verb(word.replace("می", "می\u200c", 1)):
+            modified_word = word[:-1] + "ود"  # می‌ره
+            if self._is_stop_verb(modified_word):
                 return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
+            modified_word = word + "د"  # می‌ده
+            if self._is_stop_verb(modified_word):
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
+            modified_word = word[:-1]  # رفته
+            if self._is_stop_verb(modified_word):
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
+        if word[-1] == "ن":
+            modified_word = word + "د"  # داره
+            if self._is_stop_verb(modified_word):
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
+        if "میا" in word:
+            modified_word = word.replace("میا", "می\u200cآی")
+            if self._is_stop_verb(modified_word):
+                return True
+        if "گ" in word:
+            modified_word = word.replace("گ", "گوی")
+            modified_word = modified_word.replace("گویه", "گوید")
+            if self._is_stop_verb(modified_word):
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
+        if word[-1] == "ا":
+            modified_word = word[:-1] + "ی"  # حتا -> حتی
+            if modified_word in self.stop_words:
+                return True
+        if word[-1] == "ن":
+            modified_word = word[:-1] + "ا"  # حتمن -> حتماً
+            if modified_word in self.stop_words:
+                return True
+        if word[-1] == "و":  # خودشو -> خودش را
+            modified_word = word[:-1]
+            if modified_word in self.stop_words:
+                return True
+            if self.stemmer.stem(modified_word) in self.stop_words:
+                return True
+        if "و" in word:
+            modified_word = word.replace("و", "ا")  # همون -> همان
+            modified_word = modified_word.replace("اا", "آ")  # اومده -> آمده
+            if modified_word in self.stop_words:
+                return True
+            if self.stemmer.stem(modified_word) in self.stop_words:
+                return True
+            if word[-1] == "ا":  # خودشونو -> خودشان را
+                modified_word = word[:-1]
+                if modified_word in self.stop_words:
+                    return True
+                if self.stemmer.stem(modified_word) in self.stop_words:
+                    return True
         return False
 
     def _is_stop_verb(self, word):
