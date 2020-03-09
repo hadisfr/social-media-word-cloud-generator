@@ -7,7 +7,6 @@ from wordcloud_fa import WordCloudFa
 from PIL import Image
 
 default_stop_words_path = path.join(path.dirname(__file__), ("assets/stopwords/persian").replace("/", path.sep))
-default_mask_addr = path.join(path.dirname(__file__), ("../tlgr/assets/masks/telegram.png").replace("/", path.sep))
 
 weird_patterns = re.compile(  # https://stackoverflow.com/a/57506785
     r"["
@@ -49,18 +48,19 @@ punctuation_patterns = re.compile(
 class WordCloud:
     """Telegram Word Cloud"""
 
-    def __init__(self, mask=None, size=900, stop_words_addr=default_stop_words_path, mask_addr=default_mask_addr):
+    def __init__(self, mask=None, size=900, stop_words_addr=default_stop_words_path, mask_addr=None):
         self.normalizer = hazm.Normalizer()
         self.stemmer = hazm.Stemmer()
         self.lemmatizer = hazm.Lemmatizer()
         self.stop_words = set(hazm.stopwords_list(stop_words_addr))
+        mask = np.array(Image.open(mask_addr)) if mask_addr is not None else None
         self.generator = WordCloudFa(
             width=size,
             height=size,
             include_numbers=False,
             persian_normalize=False,
             collocations=True,
-            mask=np.array(Image.open(mask_addr)),
+            mask=mask,
             background_color='white'
         )
 

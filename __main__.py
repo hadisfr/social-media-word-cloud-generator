@@ -2,12 +2,13 @@
 
 from sys import argv
 from sys import stderr
-
+from os import path
 from tlgr import Parser
 from vis import WordCloud
 
 EX_DATAERR = 65
 default_res_addr = "res.png"
+mask_addr = path.join(path.dirname(__file__), ("tlgr/assets/masks/telegram.png").replace("/", path.sep))
 
 
 def get_addr():
@@ -21,7 +22,7 @@ def get_addr():
 def main():
     tlgr_addr, res_addr = get_addr()
     with open(res_addr, "wb") as f:
-        WordCloud().get_word_cloud(Parser(tlgr_addr).get_msgs_as_text()).save(f)
+        WordCloud(mask_addr=mask_addr).get_word_cloud(Parser(tlgr_addr).get_msgs_as_text()).save(f)
 
 
 if __name__ == '__main__':
