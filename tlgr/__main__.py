@@ -3,17 +3,17 @@
 from sys import argv
 from sys import stderr
 from os import path
-from tlgr import Parser
+from . import Parser
 from vis import WordCloud
 
 EX_DATAERR = 65
 default_res_addr = "res.png"
-mask_addr = path.join(path.dirname(__file__), ("tlgr/assets/masks/telegram.png").replace("/", path.sep))
+mask_addr = path.join(path.dirname(__file__), ("assets/masks/telegram.png").replace("/", path.sep))
 
 
 def get_addr():
     if len(argv) not in [2, 3]:
-        print("usage: %s <extracted-chats-folder> [<result>]" % argv[0], file=stderr)
+        print("usage: python -m tlgr <extracted-chats-folder> [<result>]", file=stderr)
         exit(EX_DATAERR)
 
     return argv[1], argv[2] if len(argv) > 2 else default_res_addr
