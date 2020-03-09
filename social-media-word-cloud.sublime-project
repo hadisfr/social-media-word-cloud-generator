@@ -3,7 +3,7 @@
 	[
 		{
 			"path": ".",
-            "name": "Telegram Word Cloud",
+            "name": "Social Media Word Cloud",
             "folder_exclude_patterns": [".env", ".git"]
 		}
 	],
