@@ -6,6 +6,8 @@ a series of scripts to generate word cloud from social media posts
 
 ## Usage
 
+* you may need to use `git submodule update --init --recursive` to download submodules
+
 ### Telegram
 
 * (optional) create a python3 virtual environment
