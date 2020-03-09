@@ -1,0 +1,3 @@
+[submodule "tlgr/assets/stopwords"]
+	path = tlgr/assets/stopwords
+	url = https://github.com/kharazi/persian-stopwords.git
