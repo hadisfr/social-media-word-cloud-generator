@@ -171,6 +171,10 @@ class WordCloud:
                 return True
             if self.stemmer.stem(modified_word) in self.stop_words:
                 return True
+            if self._is_stop_verb(modified_word):  # نمیدونم -> نمی‌دانم
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
             if word[-1] == "ا":  # خودشونو -> خودشان را
                 modified_word = word[:-1]
                 if modified_word in self.stop_words:
