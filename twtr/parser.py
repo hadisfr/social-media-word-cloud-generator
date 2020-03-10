@@ -10,7 +10,7 @@ class Parser:
 
     def get_msgs_as_text(self):
         with open(self.addr) as f:
-            return [self._clean(json.loads(tweet)["tweet"]) for tweet in f]
+            return [self._clean(json.loads(tweet)["tweet"]) for tweet in f if len(json.loads(tweet)["reply_to"])]
 
     def _clean(self, msg):
         msg = re.sub(r"pic\.twitter\.com\/\S*", "", msg)
