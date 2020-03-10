@@ -181,6 +181,10 @@ class WordCloudGen:
                     return True
                 if self.stemmer.stem(modified_word) in self.stop_words:
                     return True
+            if word == "فک":
+                modified_word = "فکر"
+                if modified_word in self.stop_words:
+                    return True
         return False
 
     def _is_stop_verb(self, word):
