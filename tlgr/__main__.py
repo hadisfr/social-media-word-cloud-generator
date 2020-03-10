@@ -4,7 +4,7 @@ from sys import argv
 from sys import stderr
 from os import path
 from . import Parser
-from vis import WordCloud
+from vis import WordCloudGen
 
 EX_DATAERR = 65
 default_res_addr = "res.png"
@@ -22,7 +22,7 @@ def get_addr():
 def main():
     tlgr_addr, res_addr = get_addr()
     with open(res_addr, "wb") as f:
-        WordCloud(mask_addr=mask_addr).get_word_cloud(Parser(tlgr_addr).get_msgs_as_text()).save(f)
+        WordCloudGen(mask_addr=mask_addr).get_word_cloud(Parser(tlgr_addr).get_msgs_as_text()).save(f)
 
 
 if __name__ == '__main__':

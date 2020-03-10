@@ -1,3 +1,3 @@
-from .word_cloud import WordCloud
+from .word_cloud import WordCloudGen
 
 __all__ = ["WordCloud"]

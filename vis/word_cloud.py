@@ -3,7 +3,7 @@ import re
 import hazm
 import numpy as np
 from os import path
-from wordcloud_fa import WordCloudFa
+from wordcloud_fa import WordCloudFa as WordCloud
 from PIL import Image
 
 default_stop_words_path = path.join(path.dirname(__file__), ("assets/stopwords/persian").replace("/", path.sep))
@@ -45,7 +45,7 @@ punctuation_patterns = re.compile(
     )
 
 
-class WordCloud:
+class WordCloudGen:
     """Word Cloud Generator"""
 
     def __init__(self, mask=None, size=900, stop_words_addr=default_stop_words_path, mask_addr=None):
@@ -54,7 +54,7 @@ class WordCloud:
         self.lemmatizer = hazm.Lemmatizer()
         self.stop_words = set(hazm.stopwords_list(stop_words_addr))
         mask = np.array(Image.open(mask_addr)) if mask_addr is not None else None
-        self.generator = WordCloudFa(
+        self.generator = WordCloud(
             width=size,
             height=size,
             include_numbers=False,
