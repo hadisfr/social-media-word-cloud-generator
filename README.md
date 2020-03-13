@@ -19,5 +19,5 @@ a series of scripts to generate word cloud from social media posts
 
 * (optional) create a python3 virtual environment
 * install requirements mentioned in [_requirements.txt_](requirements.txt) and [twint](https://github.com/twintproject/twint)
-* export a chat to a place such as _tweets.json_ with ```twint -u <username> -o tweets.json --json --filter-retweets```
+* export a chat to a place such as _tweets.json_ with ```twint -u <username> -o tweets.json --json --filter-retweets``` or ```twint -u <username> -o tweets.json  --json -cq "from:<username> \-filter:replies"```
 * run script as: `python3 -m twtr tweets.json res.png` to generate _res.png_
