@@ -88,12 +88,14 @@ class WordCloudGen:
 
     def _normalize(self, text):
         text = self.normalizer.normalize(text)
-        text = re.sub(r" (های[متش])", u"\u200c\\1", text)  # کتاب هایت -> کتاب‌هایت
-        text = re.sub(r" (ا[متش])", u"\u200c\\1", text)  # نامه ام -> نامه‌ام
-        text = re.sub(r" (ا[می])", u"\u200c\\1", text)  # رفته ام -> رفته‌ام
+        text = re.sub(r" (های[متش]\b)", u"\u200c\\1", text)  # کتاب هایت -> کتاب‌هایت
+        text = re.sub(r" (ا[متش]\b)", u"\u200c\\1", text)  # نامه ام -> نامه‌ام
+        text = re.sub(r" (ا[می]\b)", u"\u200c\\1", text)  # رفته ام -> رفته‌ام
         return text
 
     def _is_stop_word(self, word):
+        if word in {"بابا", "کار", "وقت", "دست", "خدا", "انقد", " چقد", "نیس", "جدی", "ینی", "چقد"}:
+            return True
         if word in self.stop_words:
             return True
         if self.stemmer.stem(word) in self.stop_words:
@@ -154,6 +156,17 @@ class WordCloudGen:
         if word[-1] == "ا":
             modified_word = word[:-1] + "ی"  # حتا -> حتی
             if modified_word in self.stop_words:
+                return True
+        if "ا" in word:
+            modified_word = word[::-1].replace("ا", "اه\u200c", 1)[::-1]
+            if modified_word in self.stop_words:
+                return True
+            if self.stemmer.stem(modified_word) in self.stop_words:
+                return True
+            modified_word = word[::-1].replace("ا", "یاه\u200c", 1)[::-1]
+            if modified_word in self.stop_words:
+                return True
+            if self.stemmer.stem(modified_word) in self.stop_words:
                 return True
         if word[-1] == "ن":
             modified_word = word[:-1] + "ا"  # حتمن -> حتماً
