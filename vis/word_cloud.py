@@ -1,6 +1,7 @@
 import re
 
 import hazm
+import parsivar
 import numpy as np
 from os import path
 from wordcloud_fa import WordCloudFa as WordCloud
@@ -49,7 +50,8 @@ class WordCloudGen:
     """Word Cloud Generator"""
 
     def __init__(self, mask=None, size=900, stop_words_addr=default_stop_words_path, mask_addr=None):
-        self.normalizer = hazm.Normalizer()
+        self.hazm_normalizer = hazm.Normalizer()
+        self.parsivar_normalizer = parsivar.Normalizer()
         self.stemmer = hazm.Stemmer()
         self.lemmatizer = hazm.Lemmatizer()
         self.stop_words = set(hazm.stopwords_list(stop_words_addr))
@@ -87,10 +89,8 @@ class WordCloudGen:
         return " ".join(words)
 
     def _normalize(self, text):
-        text = self.normalizer.normalize(text)
-        text = re.sub(r" (های[متش]\b)", u"\u200c\\1", text)  # کتاب هایت -> کتاب‌هایت
-        text = re.sub(r" (ا[متش]\b)", u"\u200c\\1", text)  # نامه ام -> نامه‌ام
-        text = re.sub(r" (ا[می]\b)", u"\u200c\\1", text)  # رفته ام -> رفته‌ام
+        text = self.hazm_normalizer.normalize(text)
+        text = self.parsivar_normalizer.normalize(text)
         return text
 
     def _is_stop_word(self, word):
