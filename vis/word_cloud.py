@@ -94,7 +94,7 @@ class WordCloudGen:
         return text
 
     def _is_stop_word(self, word):
-        if word in {"بابا", "کار", "وقت", "دست", "خدا", "انقد", " چقد", "نیس", "جدی", "ینی", "چقد"}:
+        if word in {"بابا", "کار", "وقت", "دست", "خدا", "انقد", " چقد", "نیس", "جدی", "ینی", "چقد", "واسه", "دگ", "اینقد"}:
             return True
         if word.startswith("در"):
             modified_word = word[3:]
@@ -209,6 +209,36 @@ class WordCloudGen:
                     return True
                 if self.stemmer.stem(modified_word) in self.stop_words:
                     return True
+        if "خوا" in word:  # می‌خوام
+            modified_word = word.replace("خوا", "خواه", 1)
+            if self._is_stop_verb(modified_word):
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
+        if "خا" in word:  # می‌خام
+            modified_word = word.replace("خا", "خواه", 1)
+            if self._is_stop_verb(modified_word):
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
+        if "تو" in word:  # می‌خام
+            modified_word = word.replace("تو", "اوت", 1)
+            if self._is_stop_verb(modified_word):
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
+        if "ر" in word:  # می‌رم
+            modified_word = word.replace("ر", "رو", 1)
+            if self._is_stop_verb(modified_word):
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
+        if "بود" in word:  # رفته بودم
+            modified_word = re.sub("ه[\u200c ]بود.*", "", word)
+            if self._is_stop_verb(modified_word):
+                return True
+            if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
+                return True
         if word == "فک":
             modified_word = "فکر"
             if modified_word in self.stop_words:
