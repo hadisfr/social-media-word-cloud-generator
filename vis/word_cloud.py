@@ -83,8 +83,6 @@ class WordCloudGen:
                 if word:
                     # word = self.stemmer.stem(word)
                     word = word.replace(u"\u200c", "")
-                    if "\u200c" in word:
-                        print(word)
                     words.append(word)
         return " ".join(words)
 
@@ -146,16 +144,22 @@ class WordCloudGen:
         if "گ" in word:
             modified_word = word.replace("گ", "گوی")
             modified_word = modified_word.replace("گویه", "گوید")
+            modified_word = modified_word.replace("گوین", "گویند")
             if self._is_stop_verb(modified_word):
                 return True
             if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
                 return True
+            if word == "میگن":
+                print(modified_word)
         if word[-1] == "ا":
             modified_word = word[:-1] + "ی"  # حتا -> حتی
             if modified_word in self.stop_words:
                 return True
         if word[-1] == "ن":
             modified_word = word[:-1] + "ا"  # حتمن -> حتماً
+            if modified_word in self.stop_words:
+                return True
+            modified_word = word[:-1] + "لا"  # اصن -> اصلاً
             if modified_word in self.stop_words:
                 return True
         if word[-1] == "و":  # خودشو -> خودش را
@@ -181,10 +185,10 @@ class WordCloudGen:
                     return True
                 if self.stemmer.stem(modified_word) in self.stop_words:
                     return True
-            if word == "فک":
-                modified_word = "فکر"
-                if modified_word in self.stop_words:
-                    return True
+        if word == "فک":
+            modified_word = "فکر"
+            if modified_word in self.stop_words:
+                return True
         return False
 
     def _is_stop_verb(self, word):
