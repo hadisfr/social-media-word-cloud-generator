@@ -96,6 +96,14 @@ class WordCloudGen:
     def _is_stop_word(self, word):
         if word in {"بابا", "کار", "وقت", "دست", "خدا", "انقد", " چقد", "نیس", "جدی", "ینی", "چقد"}:
             return True
+        if word.startswith("در"):
+            modified_word = word[3:]
+            if self._is_stop_verb(modified_word):
+                return True
+        if word.startswith("ب"):
+            modified_word = word[2:]
+            if self._is_stop_verb(modified_word):
+                return True
         if word in self.stop_words:
             return True
         if self.stemmer.stem(word) in self.stop_words:
@@ -169,6 +177,9 @@ class WordCloudGen:
             if self.stemmer.stem(modified_word) in self.stop_words:
                 return True
         if word[-1] == "ن":
+            modified_word = word[:-1]  # حتمن -> حتماً
+            if self.stemmer.stem(modified_word) in self.stop_words:
+                return True
             modified_word = word[:-1] + "ا"  # حتمن -> حتماً
             if modified_word in self.stop_words:
                 return True
