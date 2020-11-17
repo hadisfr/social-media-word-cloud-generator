@@ -14,7 +14,7 @@ class Parser:
             res = [
                 self._clean(tweet["tweet"])
                 for tweet in [json.loads(raw_tweet) for raw_tweet in f]
-                if len(tweet["reply_to"]) == 1 and not tweet["retweet"]
+                if len(tweet["reply_to"]) == 0 and not tweet["retweet"]
             ]
             print("%d tweets" % len(res), file=stderr)
             return res
