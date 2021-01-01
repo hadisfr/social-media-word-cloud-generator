@@ -94,7 +94,7 @@ class WordCloudGen:
         return text
 
     def _is_stop_word(self, word):
-        if word in {"بابا", "کار", "وقت", "دست", "خدا", "انقد", " چقد", "نیس", "جدی", "ینی", "چقد", "واسه", "دگ", "اینقد"}:
+        if word in {"بابا", "کار", "وقت", "دست", "خدا", "انقد", " چقد", "نیس", "جدی", "ینی", "چقد", "واسه", "دگ", "اینقد", "gt", "lt"}:
             return True
         if word.startswith("در"):
             modified_word = word[3:]
