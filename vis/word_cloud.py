@@ -79,6 +79,7 @@ class WordCloudGen:
             msg = msg.replace("أ", "ا")
             msg = self._remove_punctuations(msg)
             msg = self._remove_weird_chars(msg)
+            msg = self._remove_postfixes(msg)
             for word in msg.split():
                 if self._is_stop_word(word):
                     word = ""
@@ -259,3 +260,13 @@ class WordCloudGen:
     @staticmethod
     def _remove_weird_chars(text):
         return weird_patterns.sub(" ", text)
+
+    @staticmethod
+    def _remove_postfixes(text):
+        text = text.replace("ٔ ", " ")
+        text = text.replace(" ی ", " ")
+        text = text.replace(" ها ", " ")
+        text = text.replace("‌ها ", " ")
+        text = text.replace(" های ", " ")
+        text = text.replace("‌های ", " ")
+        return text
