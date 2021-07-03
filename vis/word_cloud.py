@@ -160,8 +160,6 @@ class WordCloudGen:
                 return True
             if self._is_stop_verb(modified_word.replace("می", "می\u200c", 1)):
                 return True
-            if word == "میگن":
-                print(modified_word)
         if word[-1] == "ا":
             modified_word = word[:-1] + "ی"  # حتا -> حتی
             if modified_word in self.stop_words:
