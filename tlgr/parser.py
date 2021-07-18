@@ -24,6 +24,7 @@ class Parser:
         for file in self.files:
             print("reading %s" % file, file=stderr)
             msgs += self._get_msgs_as_text(file)
+        print("%d messages" % len(msgs), file=stderr)
         return msgs
 
     def _get_msgs_as_text(self, file):
