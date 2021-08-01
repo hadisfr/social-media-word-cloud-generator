@@ -6,6 +6,8 @@ import numpy as np
 from os import path
 from wordcloud_fa import WordCloudFa as WordCloud
 from PIL import Image
+from collections import Counter
+from pprint import pprint
 
 default_stop_words_path = path.join(path.dirname(__file__), ("assets/stopwords/persian").replace("/", path.sep))
 
@@ -67,7 +69,13 @@ class WordCloudGen:
         )
 
     def get_word_cloud(self, msgs):
-        return self.generator.generate_from_text(self._preprocess(msgs)).to_image()
+        msgs = self._preprocess(msgs)
+        word_counter = Counter(msgs.split())
+        word_counts = word_counter.most_common(1000)
+        pprint(word_counter.most_common(100))
+        wc = self.generator.generate_from_frequencies(dict(word_counts))
+        # pprint(sorted(wc.words_.items(), key=lambda item: item[1], reverse=True))
+        return wc.to_image()
 
     def _preprocess(self, msgs):
         words = []
