@@ -10,6 +10,11 @@ from collections import Counter
 from pprint import pprint
 
 default_stop_words_path = path.join(path.dirname(__file__), ("assets/stopwords/persian").replace("/", path.sep))
+default_font_path = path.join(path.dirname(__file__), ("assets/XB Niloofar.ttf").replace("/", path.sep))
+twtr = path.join(path.dirname(__file__), ("../twtr/assets/masks/twitter.png").replace("/", path.sep))
+tlgr = path.join(path.dirname(__file__), ("../tlgr/assets/masks/telegram.png").replace("/", path.sep))
+insta = path.join(path.dirname(__file__), ("./assets/masks/instagram.png").replace("/", path.sep))
+
 
 weird_patterns = re.compile(  # https://stackoverflow.com/a/57506785
     r"["
@@ -63,8 +68,15 @@ class WordCloudGen:
             height=size,
             include_numbers=False,
             persian_normalize=False,
-            collocations=True,
+            collocations=False,
+            # colormap="tab10",
+            colormap="tab10_r",
             mask=mask,
+            # font_path=default_font_path,
+            relative_scaling=0.5,
+            # relative_scaling=0.1,
+            # contour_width=3,
+            # contour_color="gray",
             background_color='white'
         )
 
@@ -85,6 +97,7 @@ class WordCloudGen:
             msg = self._normalize(msg)
             msg = msg.replace("ؤ", "و")
             msg = msg.replace("أ", "ا")
+            msg = msg.replace(":D ", " ")
             msg = self._remove_punctuations(msg)
             msg = self._remove_weird_chars(msg)
             msg = self._remove_postfixes(msg)
@@ -103,7 +116,9 @@ class WordCloudGen:
         return text
 
     def _is_stop_word(self, word):
-        if word in {"بابا", "کار", "وقت", "دست", "خدا", "انقد", " چقد", "نیس", "جدی", "ینی", "چقد", "واسه", "دگ", "اینقد", "gt", "lt"}:
+        if word.isdigit():
+            return True
+        if word in {"بابا", "کار", "وقت", "دست", "خدا", "انقد", " چقد", "نیس", "جدی", "ینی", "چقد", "واسه", "دگ", "اینقد", "gt", "lt", "سال"}:
             return True
         if word.startswith("در"):
             modified_word = word[3:]
