@@ -9,6 +9,9 @@ from PIL import Image
 from collections import Counter
 from pprint import pprint
 
+from tqdm import tqdm
+
+
 default_stop_words_path = path.join(path.dirname(__file__), ("assets/stopwords/persian").replace("/", path.sep))
 default_font_path = path.join(path.dirname(__file__), ("assets/XB Niloofar.ttf").replace("/", path.sep))
 twtr = path.join(path.dirname(__file__), ("../twtr/assets/masks/twitter.png").replace("/", path.sep))
@@ -91,7 +94,7 @@ class WordCloudGen:
 
     def _preprocess(self, msgs):
         words = []
-        for msg in msgs:
+        for msg in tqdm(msgs):
             msg = re.sub(r"https?:\/\/\S*", "", msg)  # https://github.com/MasterScrat/Chatistics
             msg = re.sub(r"\@\S*", "", msg)
             msg = self._normalize(msg)

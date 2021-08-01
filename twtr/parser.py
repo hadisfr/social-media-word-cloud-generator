@@ -3,6 +3,8 @@ import csv
 import re
 from sys import stderr
 
+from tqdm import tqdm
+
 
 class Parser:
     """Twitter Twint Exported JSON Parser"""
@@ -22,7 +24,7 @@ class Parser:
             res = [
                 self._clean(tweet["tweet"])
                 # re.sub(r"#[^\s]+", "", self._clean(tweet["tweet"]))
-                for tweet in csv.DictReader(f, delimiter=delimiter)
+                for tweet in tqdm(csv.DictReader(f, delimiter=delimiter))
                 if tweet["reply_to"] == "[]" and tweet["tweet"][0] != "@" and tweet["retweet"] == "False"
             ]
             print("%d tweets" % len(res), file=stderr)
