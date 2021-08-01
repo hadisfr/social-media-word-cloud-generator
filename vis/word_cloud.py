@@ -8,6 +8,7 @@ from wordcloud_fa import WordCloudFa as WordCloud
 from PIL import Image
 from collections import Counter
 from pprint import pprint
+from itertools import filterfalse
 
 from tqdm import tqdm
 
@@ -84,34 +85,31 @@ class WordCloudGen:
         )
 
     def get_word_cloud(self, msgs):
-        msgs = self._preprocess(msgs)
-        word_counter = Counter(msgs.split())
+        msgs = map(self._preprocess, tqdm(msgs))
+        word_counter = Counter([word for msg in msgs for word in msg])
         word_counts = word_counter.most_common(1000)
         pprint(word_counter.most_common(100))
         wc = self.generator.generate_from_frequencies(dict(word_counts))
         # pprint(sorted(wc.words_.items(), key=lambda item: item[1], reverse=True))
         return wc.to_image()
 
-    def _preprocess(self, msgs):
+    def _preprocess(self, msg):
         words = []
-        for msg in tqdm(msgs):
-            msg = re.sub(r"https?:\/\/\S*", "", msg)  # https://github.com/MasterScrat/Chatistics
-            msg = re.sub(r"\@\S*", "", msg)
-            msg = self._normalize(msg)
-            msg = msg.replace("ؤ", "و")
-            msg = msg.replace("أ", "ا")
-            msg = msg.replace(":D ", " ")
-            msg = self._remove_punctuations(msg)
-            msg = self._remove_weird_chars(msg)
-            msg = self._remove_postfixes(msg)
-            for word in msg.split():
-                if self._is_stop_word(word):
-                    word = ""
-                if word:
-                    # word = self.stemmer.stem(word)
-                    word = word.replace(u"\u200c", "")
-                    words.append(word)
-        return " ".join(words)
+        msg = re.sub(r"https?:\/\/\S*", "", msg)  # https://github.com/MasterScrat/Chatistics
+        msg = re.sub(r"\@\S*", "", msg)
+        msg = self._normalize(msg)
+        msg = msg.replace("ؤ", "و")
+        msg = msg.replace("أ", "ا")
+        msg = msg.replace(":D ", " ")
+        msg = self._remove_punctuations(msg)
+        msg = self._remove_weird_chars(msg)
+        msg = self._remove_postfixes(msg)
+        words = msg.split()
+        words = filterfalse(self._is_stop_word, words)
+        # words = map(self.stemmer.stem, words)
+        words = map(lambda word: word.replace(u"\u200c", ""), words)
+        words = list(words)
+        return words
 
     def _normalize(self, text):
         text = self.hazm_normalizer.normalize(text)
