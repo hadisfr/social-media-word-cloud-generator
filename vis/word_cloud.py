@@ -51,7 +51,7 @@ punctuation_patterns = re.compile(
     r"["
     u"،؟«»؛٬"  # https://github.com/ImanMh/persianRex
     r"\.:\!\-\[\]\(\)\/"  # https://github.com/ImanMh/persianRex
-    r"\@\?\;\#\$\%\^\&\*\+\=\\\{\}\_\^…'\"\|\/"
+    r",\@\?\;\#\$\%\^\&\*\+\=\\\{\}\_\^…'\"\|\/"
     u"ًٌٍَُِّْ"
     r"]+"
     )
