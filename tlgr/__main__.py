@@ -7,7 +7,6 @@ from . import Parser
 from vis import WordCloudGen
 
 EX_DATAERR = 65
-default_res_addr = "res.png"
 mask_addr = path.join(path.dirname(__file__), ("assets/masks/telegram.png").replace("/", path.sep))
 
 
@@ -16,7 +15,7 @@ def get_addr():
         print("usage: python -m tlgr <extracted-chats-folder> [<result>]", file=stderr)
         exit(EX_DATAERR)
 
-    return argv[1], argv[2] if len(argv) > 2 else default_res_addr
+    return argv[1], argv[2] if len(argv) > 2 else "%s.wc.png" % argv[1]
 
 
 def main():

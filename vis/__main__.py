@@ -5,7 +5,6 @@ from sys import stderr
 from . import WordCloudGen
 
 EX_DATAERR = 65
-default_res_addr = "res.png"
 
 
 def get_addr():
@@ -13,7 +12,7 @@ def get_addr():
         print("usage: python -m vis <txt-texts> [<result>]", file=stderr)
         exit(EX_DATAERR)
 
-    return argv[1], argv[2] if len(argv) > 2 else default_res_addr
+    return argv[1], argv[2] if len(argv) > 2 else "%s.wc.png" % argv[1]
 
 
 def read_text(addr):
