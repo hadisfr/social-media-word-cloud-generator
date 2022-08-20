@@ -12,7 +12,7 @@ mask_addr = path.join(path.dirname(__file__), ("assets/masks/telegram.png").repl
 
 def get_addr():
     if len(argv) not in [2, 3]:
-        print("usage: python -m tlgr <extracted-chats-folder> [<result>]", file=stderr)
+        print("usage: python -m tlgr <extracted chats folder | parsed CSV file> [<result>]", file=stderr)
         exit(EX_DATAERR)
 
     return argv[1], argv[2] if len(argv) > 2 else "%s.wc.png" % argv[1]
