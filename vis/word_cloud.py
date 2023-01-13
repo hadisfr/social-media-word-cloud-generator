@@ -97,13 +97,13 @@ class WordCloudGen:
         words = []
         msg = re.sub(r"https?:\/\/\S*", "", msg)  # https://github.com/MasterScrat/Chatistics
         msg = re.sub(r"\@\S*", "", msg)
-        msg = self._normalize(msg)
         msg = msg.replace("ؤ", "و")
         msg = msg.replace("أ", "ا")
         msg = msg.replace(":D ", " ")
         msg = self._remove_punctuations(msg)
         msg = self._remove_weird_chars(msg)
         msg = self._remove_postfixes(msg)
+        msg = self._normalize(msg)
         words = msg.split()
         words = filterfalse(self._is_stop_word, words)
         # words = map(self.stemmer.stem, words)
