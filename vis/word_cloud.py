@@ -81,7 +81,8 @@ class WordCloudGen:
             # relative_scaling=0.1,
             # contour_width=3,
             # contour_color="gray",
-            background_color='white'
+            background_color='white',
+            no_reshape=True,
         )
 
     def get_word_cloud(self, msgs):
